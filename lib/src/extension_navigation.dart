@@ -2,9 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/route_manager.dart';
 import 'package:triones_get_antd/src/root_controller.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
 
@@ -28,15 +25,15 @@ extension ExtensionBottomSheet on GetInterface {
         Duration? enterBottomSheetDuration,
         Duration? exitBottomSheetDuration,
       }) {
-    return Navigator.of(overlayContext!, rootNavigator: useRootNavigator)
+    return Navigator.of(antOverlayContext!, rootNavigator: useRootNavigator)
         .push(GetAntModalBottomSheetRoute<T>(
       builder: (_) => bottomsheet,
       isPersistent: persistent,
       // theme: Theme.of(key.currentContext, shadowThemeOnly: true),
-      theme: AntTheme.of(key.currentContext!),
+      theme: AntTheme.of(antKey.currentContext!),
       isScrollControlled: isScrollControlled,
 
-      barrierLabel: MaterialLocalizations.of(key.currentContext!)
+      barrierLabel: MaterialLocalizations.of(antKey.currentContext!)
           .modalBarrierDismissLabel,
 
       backgroundColor: backgroundColor ?? Colors.transparent,
@@ -89,12 +86,12 @@ extension GetAntNavigation on GetInterface {
           name: routeName,
           arguments: arguments,
         ),
-        popGesture: popGesture ?? defaultPopGesture,
-        transition: transition ?? defaultTransition,
-        curve: curve ?? defaultTransitionCurve,
+        popGesture: popGesture ?? antDefaultPopGesture,
+        transition: transition ?? antDefaultTransition,
+        curve: curve ?? antDefaultTransitionCurve,
         fullscreenDialog: fullscreenDialog,
         binding: binding,
-        transitionDuration: duration ?? defaultTransitionDuration,
+        transitionDuration: duration ?? antDefaultTransitionDuration,
       ),
     );
   }
@@ -320,10 +317,10 @@ you can only use widgets and widget functions here''';
         ),
         routeName: routeName,
         fullscreenDialog: fullscreenDialog,
-        popGesture: popGesture ?? defaultPopGesture,
-        transition: transition ?? defaultTransition,
-        curve: curve ?? defaultTransitionCurve,
-        transitionDuration: duration ?? defaultTransitionDuration));
+        popGesture: popGesture ?? antDefaultPopGesture,
+        transition: transition ?? antDefaultTransition,
+        curve: curve ?? antDefaultTransitionCurve,
+        transitionDuration: duration ?? antDefaultTransitionDuration));
   }
 
   Future<T?>? offAll<T>(
@@ -346,7 +343,7 @@ you can only use widgets and widget functions here''';
     return global(id).currentState?.pushAndRemoveUntil<T>(
         GetPageRoute<T>(
           opaque: opaque,
-          popGesture: popGesture ?? defaultPopGesture,
+          popGesture: popGesture ?? antDefaultPopGesture,
           page: _resolvePage(page, 'offAll'),
           binding: binding,
           gestureWidth: gestureWidth,
@@ -356,9 +353,9 @@ you can only use widgets and widget functions here''';
           ),
           fullscreenDialog: fullscreenDialog,
           routeName: routeName,
-          transition: transition ?? defaultTransition,
-          curve: curve ?? defaultTransitionCurve,
-          transitionDuration: duration ?? defaultTransitionDuration,
+          transition: transition ?? antDefaultTransition,
+          curve: curve ?? antDefaultTransitionCurve,
+          transitionDuration: duration ?? antDefaultTransitionDuration,
         ),
         predicate ?? (route) => false);
   }
@@ -462,13 +459,13 @@ you can only use widgets and widget functions here''';
   }
 
   /// give current arguments
-  dynamic get arguments => routing.args;
+  dynamic get arguments => antRouting.args;
 
   /// give name from current route
-  String get currentRoute => routing.current;
+  String get currentRoute => antRouting.current;
 
   /// give name from previous route
-  String get previousRoute => routing.previous;
+  String get previousRoute => antRouting.previous;
 
   /// check if snackbar is open
   bool get isSnackbarOpen =>
@@ -483,22 +480,22 @@ you can only use widgets and widget functions here''';
   }
 
   /// check if dialog is open
-  bool? get isDialogOpen => routing.isDialog;
+  bool? get isDialogOpen => antRouting.isDialog;
 
   /// check if bottomsheet is open
-  bool? get isBottomSheetOpen => routing.isBottomSheet;
+  bool? get isBottomSheetOpen => antRouting.isBottomSheet;
 
   /// check a raw current route
-  Route<dynamic>? get rawRoute => routing.route;
+  Route<dynamic>? get rawRoute => antRouting.route;
 
   /// check if popGesture is enable
   bool get antIsPopGestureEnable => defaultPopGesture;
 
   /// check if default opaque route is enable
-  bool get antIsOpaqueRouteDefault => defaultOpaqueRoute;
+  bool get antIsOpaqueRouteDefault => antDefaultOpaqueRoute;
 
   /// give access to currentContext
-  BuildContext? get context => key.currentContext;
+  BuildContext? get antContext => antKey.currentContext;
 
   /// give access to current Overlay Context
   BuildContext? get antOverlayContext {
@@ -510,10 +507,10 @@ you can only use widgets and widget functions here''';
   }
 
   /// give access to Theme.of(context)
-  ThemeData get theme {
-    var theme = ThemeData.fallback();
-    if (context != null) {
-      theme = Theme.of(context!);
+  AntThemeData get theme {
+    var theme = AntThemeData.fallback();
+    if (antContext != null) {
+      theme = AntTheme.of(antContext!);
     }
     return theme;
   }
@@ -524,65 +521,17 @@ you can only use widgets and widget functions here''';
   }
 
   /// The window to which this binding is bound.
-  FlutterView get window => View.of(context!);
+  FlutterView get antWindow => View.of(antContext!);
 
-  Locale? get deviceLocale => PlatformDispatcher.instance.locale;
-
-  ///The number of device pixels for each logical pixel.
-  double get pixelRatio => window.devicePixelRatio;
-
-  Size get size => window.physicalSize / pixelRatio;
-
-  ///The horizontal extent of this size.
-  double get width => size.width;
-
-  ///The vertical extent of this size
-  double get height => size.height;
-
-  ///The distance from the top edge to the first unpadded pixel,
-  ///in physical pixels.
-  double get statusBarHeight => window.padding.top;
-
-  ///The distance from the bottom edge to the first unpadded pixel,
-  ///in physical pixels.
-  double get bottomBarHeight => window.padding.bottom;
-
-  ///The system-reported text scale.
-  double get textScaleFactor => PlatformDispatcher.instance.textScaleFactor;
-
-  /// give access to TextTheme.of(context)
-  TextTheme get textTheme => theme.textTheme;
-
-  /// give access to Mediaquery.of(context)
-  MediaQueryData get mediaQuery => MediaQuery.of(context!);
-
-  /// Check if dark mode theme is enable
-  bool get isDarkMode => (theme.brightness == Brightness.dark);
-
-  /// Check if dark mode theme is enable on platform on android Q+
-  bool get isPlatformDarkMode =>
-      (PlatformDispatcher.instance.platformBrightness == Brightness.dark);
-
-  /// give access to Theme.of(context).iconTheme.color
-  Color? get iconColor => theme.iconTheme.color;
-
-  /// give access to FocusScope.of(context)
-  FocusNode? get focusScope => FocusManager.instance.primaryFocus;
-
-  // /// give access to Immutable MediaQuery.of(context).size.height
-  // double get height => MediaQuery.of(context).size.height;
-
-  // /// give access to Immutable MediaQuery.of(context).size.width
-  // double get width => MediaQuery.of(context).size.width;
 
   GlobalKey<NavigatorState> get antKey => _getxController.key;
 
-  Map<dynamic, GlobalKey<NavigatorState>> get keys => _getxController.keys;
+  Map<dynamic, GlobalKey<NavigatorState>> get antKeys => _getxController.keys;
 
   GetAntController get antRootController => _getxController;
 
-  bool get defaultPopGesture => _getxController.defaultPopGesture;
-  bool get defaultOpaqueRoute => _getxController.defaultOpaqueRoute;
+  bool get antDefaultPopGesture => _getxController.defaultPopGesture;
+  bool get antDefaultOpaqueRoute => _getxController.defaultOpaqueRoute;
 
   Transition? get antDefaultTransition => _getxController.defaultTransition;
 
@@ -590,7 +539,7 @@ you can only use widgets and widget functions here''';
     return _getxController.defaultTransitionDuration;
   }
 
-  Curve get defaultTransitionCurve => _getxController.defaultTransitionCurve;
+  Curve get antDefaultTransitionCurve => _getxController.defaultTransitionCurve;
 
   Curve get defaultDialogTransitionCurve {
     return _getxController.defaultDialogTransitionCurve;
