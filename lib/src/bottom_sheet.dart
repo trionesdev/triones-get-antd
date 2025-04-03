@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get_navigation/src/router_report.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
 
-class GetModalBottomSheetRoute<T> extends PopupRoute<T> {
-  GetModalBottomSheetRoute({
+class GetAntModalBottomSheetRoute<T> extends PopupRoute<T> {
+  GetAntModalBottomSheetRoute({
     this.builder,
     this.theme,
     this.barrierLabel,
@@ -112,7 +112,7 @@ class _GetModalBottomSheet<T> extends StatefulWidget {
     this.isPersistent = false,
   }) : super(key: key);
   final bool isPersistent;
-  final GetModalBottomSheetRoute<T>? route;
+  final GetAntModalBottomSheetRoute<T>? route;
   final bool isScrollControlled;
   final Color? backgroundColor;
   final double? elevation;
@@ -211,7 +211,7 @@ class _GetPerModalBottomSheet<T> extends StatefulWidget {
     this.enableDrag = true,
   }) : super(key: key);
   final bool? isPersistent;
-  final GetModalBottomSheetRoute<T>? route;
+  final GetAntModalBottomSheetRoute<T>? route;
   final bool isScrollControlled;
   final Color? backgroundColor;
   final double? elevation;

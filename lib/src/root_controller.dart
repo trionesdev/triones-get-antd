@@ -1,13 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:get/get_navigation/src/routes/custom_transition.dart';
-import 'package:get/get_navigation/src/routes/observers/route_observer.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:get/get_utils/get_utils.dart';
-import 'package:triones_get_antd/src/extension_navigation.dart';
+import 'package:get/get.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
 
 class GetAntController extends SuperController {

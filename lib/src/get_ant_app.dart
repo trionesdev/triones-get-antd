@@ -13,7 +13,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/route_manager.dart';
-// import 'package:triones_get_antd/src/extension_navigation.dart';
+import 'package:triones_get_antd/src/extension_navigation.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
 import 'root_controller.dart';
 
@@ -215,12 +215,12 @@ class GetAntApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GetBuilder<GetAntController>(
-    init: Get.rootController,
+    init: Get.antRootController,
     dispose: (d) {
       onDispose?.call();
     },
     initState: (i) {
-      Get.engine.addPostFrameCallback((timeStamp) {
+      Get.antEngine.addPostFrameCallback((timeStamp) {
         onReady?.call();
       });
       if (locale != null) Get.locale = locale;
@@ -233,7 +233,7 @@ class GetAntApp extends StatelessWidget {
         Get.addTranslations(translationsKeys!);
       }
 
-      Get.customTransition = customTransition;
+      Get.antCustomTransition = customTransition;
 
       initialBinding?.dependencies();
       if (getPages != null) {
@@ -244,14 +244,14 @@ class GetAntApp extends StatelessWidget {
       Get.smartManagement = smartManagement;
       onInit?.call();
 
-      Get.config(
+      Get.antConfig(
         enableLog: enableLog ?? Get.isLogEnable,
         logWriterCallback: logWriterCallback,
-        defaultTransition: defaultTransition ?? Get.defaultTransition,
-        defaultOpaqueRoute: opaqueRoute ?? Get.isOpaqueRouteDefault,
-        defaultPopGesture: popGesture ?? Get.isPopGestureEnable,
+        defaultTransition: defaultTransition ?? Get.antDefaultTransition,
+        defaultOpaqueRoute: opaqueRoute ?? Get.antIsOpaqueRouteDefault,
+        defaultPopGesture: popGesture ?? Get.antIsPopGestureEnable,
         defaultDurationTransition:
-        transitionDuration ?? Get.defaultTransitionDuration,
+        transitionDuration ?? Get.antDefaultTransitionDuration,
       );
     },
     builder: (_) => routerDelegate != null
@@ -267,7 +267,7 @@ class GetAntApp extends StatelessWidget {
       color: color,
       theme: _.theme ?? theme ?? AntThemeData.fallback(),
       darkTheme:
-      _.darkTheme ?? darkTheme ?? theme ?? ThemeData.fallback(),
+      _.darkTheme ?? darkTheme ?? theme ?? AntThemeData.fallback(),
       themeMode: _.themeMode ?? themeMode,
       locale: Get.locale ?? locale,
       scaffoldMessengerKey:
@@ -290,7 +290,7 @@ class GetAntApp extends StatelessWidget {
       key: _.unikey,
       navigatorKey: (navigatorKey == null
           ? Get.key
-          : Get.addKey(navigatorKey!)),
+          : Get.antAddKey(navigatorKey!)),
       scaffoldMessengerKey:
       scaffoldMessengerKey ?? _.scaffoldMessengerKey,
       home: home,
@@ -304,10 +304,10 @@ class GetAntApp extends StatelessWidget {
       onUnknownRoute: onUnknownRoute,
       navigatorObservers: (navigatorObservers == null
           ? <NavigatorObserver>[
-        GetObserver(routingCallback, Get.routing)
+        GetObserver(routingCallback, Get.antRouting)
       ]
           : <NavigatorObserver>[
-        GetObserver(routingCallback, Get.routing)
+        GetObserver(routingCallback, Get.antRouting)
       ]
         ..addAll(navigatorObservers!)),
       builder: defaultBuilder,
