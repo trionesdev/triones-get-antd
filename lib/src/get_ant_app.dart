@@ -1,20 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_core/src/log.dart';
-import 'package:get/get_core/src/smart_management.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
-import 'package:get/get_navigation/src/root/internacionalization.dart';
-import 'package:get/get_navigation/src/routes/custom_transition.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:get/get_navigation/src/routes/observers/route_observer.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/route_manager.dart';
-import 'package:triones_get_antd/src/extension_navigation.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
+import 'package:trionesdev_get_antd/src/extension_navigation.dart';
+
 import 'root_controller.dart';
 
 class GetAntApp extends StatelessWidget {

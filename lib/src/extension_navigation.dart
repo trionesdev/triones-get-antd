@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:triones_get_antd/src/root_controller.dart';
+import 'package:trionesdev_get_antd/src/root_controller.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
 
 import 'bottom_sheet.dart';
