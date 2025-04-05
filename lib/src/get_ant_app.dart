@@ -239,11 +239,11 @@ class GetAntApp extends StatelessWidget {
       Get.antConfig(
         enableLog: enableLog ?? Get.isLogEnable,
         logWriterCallback: logWriterCallback,
-        defaultTransition: defaultTransition ?? Get.antDefaultTransition,
-        defaultOpaqueRoute: opaqueRoute ?? Get.antIsOpaqueRouteDefault,
-        defaultPopGesture: popGesture ?? Get.antIsPopGestureEnable,
+        defaultTransition: defaultTransition ?? Get.defaultAntTransition,
+        defaultOpaqueRoute: opaqueRoute ?? Get.isAntOpaqueRouteDefault,
+        defaultPopGesture: popGesture ?? Get.isAntPopGestureEnable,
         defaultDurationTransition:
-        transitionDuration ?? Get.antDefaultTransitionDuration,
+        transitionDuration ?? Get.defaultAntTransitionDuration,
       );
     },
     builder: (_) => routerDelegate != null

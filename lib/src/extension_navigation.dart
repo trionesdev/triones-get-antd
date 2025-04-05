@@ -86,12 +86,12 @@ extension GetAntNavigation on GetInterface {
           name: routeName,
           arguments: arguments,
         ),
-        popGesture: popGesture ?? antDefaultPopGesture,
-        transition: transition ?? antDefaultTransition,
-        curve: curve ?? antDefaultTransitionCurve,
+        popGesture: popGesture ?? defaultAntPopGesture,
+        transition: transition ?? defaultAntTransition,
+        curve: curve ?? defaultAntTransitionCurve,
         fullscreenDialog: fullscreenDialog,
         binding: binding,
-        transitionDuration: duration ?? antDefaultTransitionDuration,
+        transitionDuration: duration ?? defaultAntTransitionDuration,
       ),
     );
   }
@@ -317,10 +317,10 @@ you can only use widgets and widget functions here''';
         ),
         routeName: routeName,
         fullscreenDialog: fullscreenDialog,
-        popGesture: popGesture ?? antDefaultPopGesture,
-        transition: transition ?? antDefaultTransition,
-        curve: curve ?? antDefaultTransitionCurve,
-        transitionDuration: duration ?? antDefaultTransitionDuration));
+        popGesture: popGesture ?? defaultAntPopGesture,
+        transition: transition ?? defaultAntTransition,
+        curve: curve ?? defaultAntTransitionCurve,
+        transitionDuration: duration ?? defaultAntTransitionDuration));
   }
 
   Future<T?>? offAll<T>(
@@ -343,7 +343,7 @@ you can only use widgets and widget functions here''';
     return global(id).currentState?.pushAndRemoveUntil<T>(
         GetPageRoute<T>(
           opaque: opaque,
-          popGesture: popGesture ?? antDefaultPopGesture,
+          popGesture: popGesture ?? defaultAntPopGesture,
           page: _resolvePage(page, 'offAll'),
           binding: binding,
           gestureWidth: gestureWidth,
@@ -353,9 +353,9 @@ you can only use widgets and widget functions here''';
           ),
           fullscreenDialog: fullscreenDialog,
           routeName: routeName,
-          transition: transition ?? antDefaultTransition,
-          curve: curve ?? antDefaultTransitionCurve,
-          transitionDuration: duration ?? antDefaultTransitionDuration,
+          transition: transition ?? defaultAntTransition,
+          curve: curve ?? defaultAntTransitionCurve,
+          transitionDuration: duration ?? defaultAntTransitionDuration,
         ),
         predicate ?? (route) => false);
   }
@@ -489,10 +489,10 @@ you can only use widgets and widget functions here''';
   Route<dynamic>? get rawRoute => antRouting.route;
 
   /// check if popGesture is enable
-  bool get antIsPopGestureEnable => defaultPopGesture;
+  bool get isAntPopGestureEnable => defaultPopGesture;
 
   /// check if default opaque route is enable
-  bool get antIsOpaqueRouteDefault => antDefaultOpaqueRoute;
+  bool get isAntOpaqueRouteDefault => defaultAntOpaqueRoute;
 
   /// give access to currentContext
   BuildContext? get antContext => antKey.currentContext;
@@ -530,16 +530,16 @@ you can only use widgets and widget functions here''';
 
   GetAntController get antRootController => _getxController;
 
-  bool get antDefaultPopGesture => _getxController.defaultPopGesture;
-  bool get antDefaultOpaqueRoute => _getxController.defaultOpaqueRoute;
+  bool get defaultAntPopGesture => _getxController.defaultPopGesture;
+  bool get defaultAntOpaqueRoute => _getxController.defaultOpaqueRoute;
 
-  Transition? get antDefaultTransition => _getxController.defaultTransition;
+  Transition? get defaultAntTransition => _getxController.defaultTransition;
 
-  Duration get antDefaultTransitionDuration {
+  Duration get defaultAntTransitionDuration {
     return _getxController.defaultTransitionDuration;
   }
 
-  Curve get antDefaultTransitionCurve => _getxController.defaultTransitionCurve;
+  Curve get defaultAntTransitionCurve => _getxController.defaultTransitionCurve;
 
   Curve get defaultDialogTransitionCurve {
     return _getxController.defaultDialogTransitionCurve;
