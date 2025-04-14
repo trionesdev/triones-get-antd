@@ -1,13 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/route_manager.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
-import 'package:trionesdev_get_antd/src/extension_navigation.dart';
-
-import 'root_controller.dart';
 
 class GetAntApp extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -74,15 +69,13 @@ class GetAntApp extends StatelessWidget {
     this.navigatorKey,
     this.scaffoldMessengerKey,
     this.home,
-    Map<String, Widget Function(BuildContext)> this.routes =
-    const <String, WidgetBuilder>{},
+    this.routes = const <String, WidgetBuilder>{},
     this.initialRoute,
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
     this.useInheritedMediaQuery = false,
-    List<NavigatorObserver> this.navigatorObservers =
-    const <NavigatorObserver>[],
+    this.navigatorObservers = const <NavigatorObserver>[],
     this.builder,
     this.textDirection,
     this.title = '',
@@ -126,190 +119,35 @@ class GetAntApp extends StatelessWidget {
     this.highContrastTheme,
     this.highContrastDarkTheme,
     this.actions,
-  }): routeInformationProvider = null,
+  })
+      : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
         backButtonDispatcher = null,
         super(key: key);
 
-  GetAntApp.router({
-    Key? key,
-    this.routeInformationProvider,
-    this.scaffoldMessengerKey,
-    RouteInformationParser<Object>? routeInformationParser,
-    RouterDelegate<Object>? routerDelegate,
-    this.backButtonDispatcher,
-    this.builder,
-    this.title = '',
-    this.onGenerateTitle,
-    this.color,
-    this.theme,
-    this.darkTheme,
-    this.useInheritedMediaQuery = false,
-    this.highContrastTheme,
-    this.highContrastDarkTheme,
-    this.themeMode = AntThemeMode.system,
-    this.locale,
-    this.localizationsDelegates,
-    this.localeListResolutionCallback,
-    this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
-    this.debugShowMaterialGrid = false,
-    this.showPerformanceOverlay = false,
-    this.checkerboardRasterCacheImages = false,
-    this.checkerboardOffscreenLayers = false,
-    this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
-    this.shortcuts,
-    this.scrollBehavior,
-    this.actions,
-    this.customTransition,
-    this.translationsKeys,
-    this.translations,
-    this.textDirection,
-    this.fallbackLocale,
-    this.routingCallback,
-    this.defaultTransition,
-    this.opaqueRoute,
-    this.onInit,
-    this.onReady,
-    this.onDispose,
-    this.enableLog = kDebugMode,
-    this.logWriterCallback,
-    this.popGesture,
-    this.smartManagement = SmartManagement.full,
-    this.initialBinding,
-    this.transitionDuration,
-    this.defaultGlobalState,
-    this.getPages,
-    this.navigatorObservers,
-    this.unknownRoute,
-  })  : routerDelegate = routerDelegate ??= Get.createDelegate(
-    notFoundRoute: unknownRoute,
-  ),
-        routeInformationParser =
-        routeInformationParser ??= Get.createInformationParser(
-          initialRoute: getPages?.first.name ?? '/',
-        ),
-  //navigatorObservers = null,
-        navigatorKey = null,
-        onGenerateRoute = null,
-        home = null,
-        onGenerateInitialRoutes = null,
-        onUnknownRoute = null,
-        routes = null,
-        initialRoute = null,
-        super(key: key) {
-    Get.routerDelegate = routerDelegate;
-    Get.routeInformationParser = routeInformationParser;
-  }
-
-
   @override
-  Widget build(BuildContext context) => GetBuilder<GetAntController>(
-    init: Get.antRootController,
-    dispose: (d) {
-      onDispose?.call();
-    },
-    initState: (i) {
-      Get.engine.addPostFrameCallback((timeStamp) {
-        onReady?.call();
-      });
-      if (locale != null) Get.locale = locale;
-
-      if (fallbackLocale != null) Get.fallbackLocale = fallbackLocale;
-
-      if (translations != null) {
-        Get.addTranslations(translations!.keys);
-      } else if (translationsKeys != null) {
-        Get.addTranslations(translationsKeys!);
-      }
-
-      Get.antCustomTransition = customTransition;
-
-      initialBinding?.dependencies();
-      if (getPages != null) {
-        Get.addPages(getPages!);
-      }
-
-      //Get.setDefaultDelegate(routerDelegate);
-      Get.smartManagement = smartManagement;
-      onInit?.call();
-      Get.antConfig(
-        enableLog: enableLog ?? Get.isLogEnable,
-        logWriterCallback: logWriterCallback,
-        defaultTransition: defaultTransition ?? Get.defaultAntTransition,
-        defaultOpaqueRoute: opaqueRoute ?? Get.isAntOpaqueRouteDefault,
-        defaultPopGesture: popGesture ?? Get.isAntPopGestureEnable,
-        defaultDurationTransition:
-        transitionDuration ?? Get.defaultAntTransitionDuration,
-      );
-    },
-    builder: (_) => routerDelegate != null
-        ? AntApp.router(
-      routerDelegate: routerDelegate!,
-      routeInformationParser: routeInformationParser!,
-      backButtonDispatcher: backButtonDispatcher,
-      routeInformationProvider: routeInformationProvider,
-      key: _.unikey,
-      builder: defaultBuilder,
-      title: title,
-      onGenerateTitle: onGenerateTitle,
-      color: color,
-      theme: _.antTheme ?? theme ?? AntThemeData.fallback(),
-      darkTheme:
-      _.antDarkTheme ?? darkTheme ?? theme ?? AntThemeData.fallback(),
-      themeMode: _.antThemeMode ?? themeMode,
-      locale: Get.locale ?? locale,
-      scaffoldMessengerKey:
-      scaffoldMessengerKey ?? _.antScaffoldMessengerKey,
-      localizationsDelegates: localizationsDelegates,
-      localeListResolutionCallback: localeListResolutionCallback,
-      localeResolutionCallback: localeResolutionCallback,
-      supportedLocales: supportedLocales,
-      debugShowMaterialGrid: debugShowMaterialGrid,
-      showPerformanceOverlay: showPerformanceOverlay,
-      checkerboardRasterCacheImages: checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: checkerboardOffscreenLayers,
-      showSemanticsDebugger: showSemanticsDebugger,
-      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-      shortcuts: shortcuts,
-      scrollBehavior: scrollBehavior,
-      // useInheritedMediaQuery: useInheritedMediaQuery,
-    )
-        : AntApp(
-      key: _.unikey,
-      navigatorKey: (navigatorKey == null
-          ? Get.antKey
-          : Get.addAntKey(navigatorKey!)),
-      scaffoldMessengerKey:
-      scaffoldMessengerKey ?? _.antScaffoldMessengerKey,
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      navigatorKey: navigatorKey,
+      scaffoldMessengerKey: scaffoldMessengerKey,
       home: home,
       routes: routes ?? const <String, WidgetBuilder>{},
       initialRoute: initialRoute,
-      onGenerateRoute:
-      (getPages != null ? generator : onGenerateRoute),
-      onGenerateInitialRoutes: (getPages == null || home != null)
-          ? onGenerateInitialRoutes
-          : initialRoutesGenerate,
+      onGenerateRoute: onGenerateRoute,
+      onGenerateInitialRoutes: onGenerateInitialRoutes,
       onUnknownRoute: onUnknownRoute,
-      navigatorObservers: (navigatorObservers == null
-          ? <NavigatorObserver>[
-        GetObserver(routingCallback, Get.antRouting)
-      ]
-          : <NavigatorObserver>[
-        GetObserver(routingCallback, Get.antRouting)
-      ]
-        ..addAll(navigatorObservers!)),
-      builder: defaultBuilder,
+      navigatorObservers: navigatorObservers ?? const <NavigatorObserver>[],
+      builder: builder,
+      textDirection: textDirection,
       title: title,
       onGenerateTitle: onGenerateTitle,
       color: color,
-      theme: _.antTheme ?? theme ?? AntThemeData.fallback(),
-      darkTheme:
-      _.antDarkTheme ?? darkTheme ?? theme ?? AntThemeData.fallback(),
-      themeMode: _.antThemeMode ?? themeMode,
-      locale: Get.locale ?? locale,
+      theme: theme?.toMaterialThemeData(),
+      darkTheme: darkTheme?.toMaterialThemeData(),
+      themeMode: toMaterialThemeMode(themeMode),
+      locale: locale,
+      fallbackLocale: fallbackLocale,
       localizationsDelegates: localizationsDelegates,
       localeListResolutionCallback: localeListResolutionCallback,
       localeResolutionCallback: localeResolutionCallback,
@@ -322,33 +160,28 @@ class GetAntApp extends StatelessWidget {
       debugShowCheckedModeBanner: debugShowCheckedModeBanner,
       shortcuts: shortcuts,
       scrollBehavior: scrollBehavior,
-      // useInheritedMediaQuery: useInheritedMediaQuery,
-      //   actions: actions,
-    ),
-  );
-
-  Widget defaultBuilder(BuildContext context, Widget? child) {
-    return Directionality(
-      textDirection: textDirection ??
-          (rtlLanguages.contains(Get.locale?.languageCode)
-              ? TextDirection.rtl
-              : TextDirection.ltr),
-      child: builder == null
-          ? (child ?? const Ant())
-          : builder!(context, child ?? const Ant()),
+      customTransition: customTransition,
+      translationsKeys: translationsKeys,
+      translations: translations,
+      onInit: onInit,
+      onReady: onReady,
+      onDispose: onDispose,
+      routingCallback: routingCallback,
+      defaultTransition: defaultTransition,
+      getPages: getPages,
+      opaqueRoute: opaqueRoute,
+      enableLog: enableLog,
+      logWriterCallback: logWriterCallback,
+      popGesture: popGesture,
+      transitionDuration: transitionDuration,
+      defaultGlobalState: defaultGlobalState,
+      smartManagement: smartManagement,
+      initialBinding: initialBinding,
+      unknownRoute: unknownRoute,
+      highContrastTheme: highContrastTheme?.toMaterialThemeData(),
+      highContrastDarkTheme: highContrastDarkTheme?.toMaterialThemeData(),
+      actions: actions,
     );
   }
 
-  Route<dynamic> generator(RouteSettings settings) {
-    return PageRedirect(settings: settings, unknownRoute: unknownRoute).page();
-  }
-
-  List<Route<dynamic>> initialRoutesGenerate(String name) {
-    return [
-      PageRedirect(
-        settings: RouteSettings(name: name),
-        unknownRoute: unknownRoute,
-      ).page()
-    ];
-  }
 }
