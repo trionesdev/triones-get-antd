@@ -212,7 +212,7 @@ class GetAntApp extends StatelessWidget {
       onDispose?.call();
     },
     initState: (i) {
-      Get.antEngine.addPostFrameCallback((timeStamp) {
+      Get.engine.addPostFrameCallback((timeStamp) {
         onReady?.call();
       });
       if (locale != null) Get.locale = locale;
@@ -235,7 +235,6 @@ class GetAntApp extends StatelessWidget {
       //Get.setDefaultDelegate(routerDelegate);
       Get.smartManagement = smartManagement;
       onInit?.call();
-
       Get.antConfig(
         enableLog: enableLog ?? Get.isLogEnable,
         logWriterCallback: logWriterCallback,
@@ -257,13 +256,13 @@ class GetAntApp extends StatelessWidget {
       title: title,
       onGenerateTitle: onGenerateTitle,
       color: color,
-      theme: _.theme ?? theme ?? AntThemeData.fallback(),
+      theme: _.antTheme ?? theme ?? AntThemeData.fallback(),
       darkTheme:
-      _.darkTheme ?? darkTheme ?? theme ?? AntThemeData.fallback(),
-      themeMode: _.themeMode ?? themeMode,
+      _.antDarkTheme ?? darkTheme ?? theme ?? AntThemeData.fallback(),
+      themeMode: _.antThemeMode ?? themeMode,
       locale: Get.locale ?? locale,
       scaffoldMessengerKey:
-      scaffoldMessengerKey ?? _.scaffoldMessengerKey,
+      scaffoldMessengerKey ?? _.antScaffoldMessengerKey,
       localizationsDelegates: localizationsDelegates,
       localeListResolutionCallback: localeListResolutionCallback,
       localeResolutionCallback: localeResolutionCallback,
@@ -281,10 +280,10 @@ class GetAntApp extends StatelessWidget {
         : AntApp(
       key: _.unikey,
       navigatorKey: (navigatorKey == null
-          ? Get.key
-          : Get.antAddKey(navigatorKey!)),
+          ? Get.antKey
+          : Get.addAntKey(navigatorKey!)),
       scaffoldMessengerKey:
-      scaffoldMessengerKey ?? _.scaffoldMessengerKey,
+      scaffoldMessengerKey ?? _.antScaffoldMessengerKey,
       home: home,
       routes: routes ?? const <String, WidgetBuilder>{},
       initialRoute: initialRoute,
@@ -306,10 +305,10 @@ class GetAntApp extends StatelessWidget {
       title: title,
       onGenerateTitle: onGenerateTitle,
       color: color,
-      theme: _.theme ?? theme ?? AntThemeData.fallback(),
+      theme: _.antTheme ?? theme ?? AntThemeData.fallback(),
       darkTheme:
-      _.darkTheme ?? darkTheme ?? theme ?? AntThemeData.fallback(),
-      themeMode: _.themeMode ?? themeMode,
+      _.antDarkTheme ?? darkTheme ?? theme ?? AntThemeData.fallback(),
+      themeMode: _.antThemeMode ?? themeMode,
       locale: Get.locale ?? locale,
       localizationsDelegates: localizationsDelegates,
       localeListResolutionCallback: localeListResolutionCallback,

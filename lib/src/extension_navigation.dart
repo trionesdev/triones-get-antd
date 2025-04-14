@@ -1,61 +1,12 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trionesdev_get_antd/src/root_controller.dart';
 import 'package:trionesdev_antd_mobile/antd.dart';
 
-import 'bottom_sheet.dart';
+extension GetAntNavigation on GetInterface{
 
-extension ExtensionBottomSheet on GetInterface {
-  Future<T?> bottomSheet<T>(
-      Widget bottomsheet, {
-        Color? backgroundColor,
-        double? elevation,
-        bool persistent = true,
-        ShapeBorder? shape,
-        Clip? clipBehavior,
-        Color? barrierColor,
-        bool? ignoreSafeArea,
-        bool isScrollControlled = false,
-        bool useRootNavigator = false,
-        bool isDismissible = true,
-        bool enableDrag = true,
-        RouteSettings? settings,
-        Duration? enterBottomSheetDuration,
-        Duration? exitBottomSheetDuration,
-      }) {
-    return Navigator.of(antOverlayContext!, rootNavigator: useRootNavigator)
-        .push(GetAntModalBottomSheetRoute<T>(
-      builder: (_) => bottomsheet,
-      isPersistent: persistent,
-      // theme: Theme.of(key.currentContext, shadowThemeOnly: true),
-      theme: AntTheme.of(antKey.currentContext!),
-      isScrollControlled: isScrollControlled,
-
-      barrierLabel: MaterialLocalizations.of(antKey.currentContext!)
-          .modalBarrierDismissLabel,
-
-      backgroundColor: backgroundColor ?? Colors.transparent,
-      elevation: elevation,
-      shape: shape,
-      removeTop: ignoreSafeArea ?? true,
-      clipBehavior: clipBehavior,
-      isDismissible: isDismissible,
-      modalBarrierColor: barrierColor,
-      settings: settings,
-      enableDrag: enableDrag,
-      enterBottomSheetDuration:
-      enterBottomSheetDuration ?? const Duration(milliseconds: 250),
-      exitBottomSheetDuration:
-      exitBottomSheetDuration ?? const Duration(milliseconds: 200),
-    ));
-  }
-}
-
-
-extension GetAntNavigation on GetInterface {
-  Future<T?>? to<T>(
+  Future<T?>? antTo<T>(
       dynamic page, {
         bool? opaque,
         Transition? transition,
@@ -73,10 +24,10 @@ extension GetAntNavigation on GetInterface {
     // var routeName = "/${page.runtimeType}";
     routeName ??= "/${page.runtimeType}";
     routeName = _cleanRouteName(routeName);
-    if (preventDuplicates && routeName == currentRoute) {
+    if (preventDuplicates && routeName == antCurrentRoute) {
       return null;
     }
-    return global(id).currentState?.push<T>(
+    return antGlobal(id).currentState?.push<T>(
       GetPageRoute<T>(
         opaque: opaque ?? true,
         page: _resolvePage(page, 'to'),
@@ -114,14 +65,14 @@ you can only use widgets and widget functions here''';
     }
   }
 
-  Future<T?>? toNamed<T>(
+  Future<T?>? antToNamed<T>(
       String page, {
         dynamic arguments,
         int? id,
         bool preventDuplicates = true,
         Map<String, String>? parameters,
       }) {
-    if (preventDuplicates && page == currentRoute) {
+    if (preventDuplicates && page == antCurrentRoute) {
       return null;
     }
 
@@ -130,20 +81,20 @@ you can only use widgets and widget functions here''';
       page = uri.toString();
     }
 
-    return global(id).currentState?.pushNamed<T>(
+    return antGlobal(id).currentState?.pushNamed<T>(
       page,
       arguments: arguments,
     );
   }
 
-  Future<T?>? offNamed<T>(
+  Future<T?>? antOffNamed<T>(
       String page, {
         dynamic arguments,
         int? id,
         bool preventDuplicates = true,
         Map<String, String>? parameters,
       }) {
-    if (preventDuplicates && page == currentRoute) {
+    if (preventDuplicates && page == antCurrentRoute) {
       return null;
     }
 
@@ -151,25 +102,25 @@ you can only use widgets and widget functions here''';
       final uri = Uri(path: page, queryParameters: parameters);
       page = uri.toString();
     }
-    return global(id).currentState?.pushReplacementNamed(
+    return antGlobal(id).currentState?.pushReplacementNamed(
       page,
       arguments: arguments,
     );
   }
 
-  void until(RoutePredicate predicate, {int? id}) {
+  void antUntil(RoutePredicate predicate, {int? id}) {
     // if (key.currentState.mounted) // add this if appear problems on future with route navigate
     // when widget don't mounted
-    return global(id).currentState?.popUntil(predicate);
+    return antGlobal(id).currentState?.popUntil(predicate);
   }
 
-  Future<T?>? offUntil<T>(Route<T> page, RoutePredicate predicate, {int? id}) {
+  Future<T?>? antOffUntil<T>(Route<T> page, RoutePredicate predicate, {int? id}) {
     // if (key.currentState.mounted) // add this if appear problems on future with route navigate
     // when widget don't mounted
-    return global(id).currentState?.pushAndRemoveUntil<T>(page, predicate);
+    return antGlobal(id).currentState?.pushAndRemoveUntil<T>(page, predicate);
   }
 
-  Future<T?>? offNamedUntil<T>(
+  Future<T?>? antOffNamedUntil<T>(
       String page,
       RoutePredicate predicate, {
         int? id,
@@ -181,14 +132,14 @@ you can only use widgets and widget functions here''';
       page = uri.toString();
     }
 
-    return global(id).currentState?.pushNamedAndRemoveUntil<T>(
+    return antGlobal(id).currentState?.pushNamedAndRemoveUntil<T>(
       page,
       predicate,
       arguments: arguments,
     );
   }
 
-  Future<T?>? offAndToNamed<T>(
+  Future<T?>? antOffAndToNamed<T>(
       String page, {
         dynamic arguments,
         int? id,
@@ -199,25 +150,18 @@ you can only use widgets and widget functions here''';
       final uri = Uri(path: page, queryParameters: parameters);
       page = uri.toString();
     }
-    return global(id).currentState?.popAndPushNamed(
+    return antGlobal(id).currentState?.popAndPushNamed(
       page,
       arguments: arguments,
       result: result,
     );
   }
 
-  /// **Navigation.removeRoute()** shortcut.<br><br>
-  ///
-  /// Remove a specific [route] from the stack
-  ///
-  /// [id] is for when you are using nested navigation,
-  /// as explained in documentation
   void removeRoute(Route<dynamic> route, {int? id}) {
-    return global(id).currentState?.removeRoute(route);
+    return antGlobal(id).currentState?.removeRoute(route);
   }
 
-
-  Future<T?>? offAllNamed<T>(
+  Future<T?>? antOffAllNamed<T>(
       String newRouteName, {
         RoutePredicate? predicate,
         dynamic arguments,
@@ -229,22 +173,20 @@ you can only use widgets and widget functions here''';
       newRouteName = uri.toString();
     }
 
-    return global(id).currentState?.pushNamedAndRemoveUntil<T>(
+    return antGlobal(id).currentState?.pushNamedAndRemoveUntil<T>(
       newRouteName,
       predicate ?? (_) => false,
       arguments: arguments,
     );
   }
 
-  /// Returns true if a Snackbar, Dialog or BottomSheet is currently OPEN
-  bool get isOverlaysOpen =>
-      (isSnackbarOpen || isDialogOpen! || isBottomSheetOpen!);
+  bool get isAntOverlaysOpen =>
+      (isSnackbarOpen || isAntDialogOpen! || isAntBottomSheetOpen!);
 
-  /// Returns true if there is no Snackbar, Dialog or BottomSheet open
-  bool get isOverlaysClosed =>
-      (!isSnackbarOpen && !isDialogOpen! && !isBottomSheetOpen!);
+  bool get isAntOverlaysClosed =>
+      (!isSnackbarOpen && !isAntDialogOpen! && !isAntBottomSheetOpen!);
 
-  void back<T>({
+  void antBack<T>({
     T? result,
     bool closeOverlays = false,
     bool canPop = true,
@@ -264,29 +206,29 @@ you can only use widgets and widget functions here''';
         closeAllSnackbars();
       }
       navigator?.popUntil((route) {
-        return (!isDialogOpen! && !isBottomSheetOpen!);
+        return (!isAntDialogOpen! && !isAntBottomSheetOpen!);
       });
     }
     if (canPop) {
-      if (global(id).currentState?.canPop() == true) {
-        global(id).currentState?.pop<T>(result);
+      if (antGlobal(id).currentState?.canPop() == true) {
+        antGlobal(id).currentState?.pop<T>(result);
       }
     } else {
-      global(id).currentState?.pop<T>(result);
+      antGlobal(id).currentState?.pop<T>(result);
     }
   }
 
-  void close(int times, [int? id]) {
+  void antClose(int times, [int? id]) {
     if (times < 1) {
       times = 1;
     }
     var count = 0;
-    var back = global(id).currentState?.popUntil((route) => count++ == times);
+    var back = antGlobal(id).currentState?.popUntil((route) => count++ == times);
 
     return back;
   }
 
-  Future<T?>? off<T>(
+  Future<T?>? antOff<T>(
       dynamic page, {
         bool opaque = false,
         Transition? transition,
@@ -306,7 +248,7 @@ you can only use widgets and widget functions here''';
     if (preventDuplicates && routeName == currentRoute) {
       return null;
     }
-    return global(id).currentState?.pushReplacement(GetPageRoute(
+    return antGlobal(id).currentState?.pushReplacement(GetPageRoute(
         opaque: opaque,
         gestureWidth: gestureWidth,
         page: _resolvePage(page, 'off'),
@@ -323,7 +265,7 @@ you can only use widgets and widget functions here''';
         transitionDuration: duration ?? defaultAntTransitionDuration));
   }
 
-  Future<T?>? offAll<T>(
+  Future<T?>? antOffAll<T>(
       dynamic page, {
         RoutePredicate? predicate,
         bool opaque = false,
@@ -340,10 +282,10 @@ you can only use widgets and widget functions here''';
       }) {
     routeName ??= "/${page.runtimeType.toString()}";
     routeName = _cleanRouteName(routeName);
-    return global(id).currentState?.pushAndRemoveUntil<T>(
+    return antGlobal(id).currentState?.pushAndRemoveUntil<T>(
         GetPageRoute<T>(
           opaque: opaque,
-          popGesture: popGesture ?? defaultAntPopGesture,
+          popGesture: popGesture ?? defaultPopGesture,
           page: _resolvePage(page, 'offAll'),
           binding: binding,
           gestureWidth: gestureWidth,
@@ -371,7 +313,6 @@ you can only use widgets and widget functions here''';
     return Uri.tryParse(name)?.toString() ?? name;
   }
 
-  /// change default config of Get
   void antConfig(
       {bool? enableLog,
         LogWriterCallback? logWriterCallback,
@@ -387,184 +328,154 @@ you can only use widgets and widget functions here''';
       Get.log = logWriterCallback;
     }
     if (defaultPopGesture != null) {
-      _getxController.defaultPopGesture = defaultPopGesture;
+      _getxAntController.defaultPopGesture = defaultAntPopGesture;
     }
     if (defaultOpaqueRoute != null) {
-      _getxController.defaultOpaqueRoute = defaultOpaqueRoute;
+      _getxAntController.defaultOpaqueRoute = defaultAntOpaqueRoute;
     }
     if (defaultTransition != null) {
-      _getxController.defaultTransition = defaultTransition;
+      _getxAntController.defaultTransition = defaultAntTransition;
     }
 
     if (defaultDurationTransition != null) {
-      _getxController.defaultTransitionDuration = defaultDurationTransition;
+      _getxAntController.defaultTransitionDuration = defaultDurationTransition;
     }
   }
 
-  Future<void> updateLocale(Locale l) async {
-    Get.locale = l;
-    await forceAppUpdate();
+
+  void antAppUpdate() => _getxAntController.update();
+
+  void changeAntTheme(ThemeData theme) {
+    _getxAntController.setTheme(theme);
   }
 
-  Future<void> forceAppUpdate() async {
-    await antEngine.performReassemble();
+  void changeAntThemeMode(ThemeMode themeMode) {
+    _getxAntController.setThemeMode(themeMode);
   }
 
-  void appUpdate() => _getxController.update();
-
-  void changeTheme(AntThemeData theme) {
-    _getxController.setTheme(theme);
+  GlobalKey<NavigatorState>? addAntKey(GlobalKey<NavigatorState> newKey) {
+    return _getxAntController.addKey(newKey);
   }
 
-  void changeThemeMode(AntThemeMode themeMode) {
-    _getxController.setThemeMode(themeMode);
-  }
-
-  GlobalKey<NavigatorState>? antAddKey(GlobalKey<NavigatorState> newKey) {
-    return _getxController.addKey(newKey);
-  }
-
-  GlobalKey<NavigatorState>? nestedKey(dynamic key) {
-    keys.putIfAbsent(
+  GlobalKey<NavigatorState>? antNestedKey(dynamic key) {
+    antKeys.putIfAbsent(
       key,
           () => GlobalKey<NavigatorState>(
         debugLabel: 'Getx nested key: ${key.toString()}',
       ),
     );
-    return keys[key];
+    return antKeys[key];
   }
 
-  GlobalKey<NavigatorState> global(int? k) {
+  GlobalKey<NavigatorState> antGlobal(int? k) {
     GlobalKey<NavigatorState> newKey;
     if (k == null) {
-      newKey = key;
+      newKey = antKey;
     } else {
-      if (!keys.containsKey(k)) {
+      if (!antKeys.containsKey(k)) {
         throw 'Route id ($k) not found';
       }
-      newKey = keys[k]!;
+      newKey = antKeys[k]!;
     }
 
-    if (newKey.currentContext == null && !testMode) {
+    if (newKey.currentContext == null && !antTestMode) {
       throw """You are trying to use contextless navigation without
-      a GetMaterialApp or Get.key.
+      a GetAntApp or Get.key.
       If you are testing your app, you can use:
       [Get.testMode = true], or if you are running your app on
-      a physical device or emulator, you must exchange your [MaterialApp]
-      for a [GetMaterialApp].
+      a physical device or emulator, you must exchange your [AntApp]
+      for a [GetAntApp].
       """;
     }
 
     return newKey;
   }
 
-  /// give current arguments
-  dynamic get arguments => antRouting.args;
 
-  /// give name from current route
-  String get currentRoute => antRouting.current;
-
-  /// give name from previous route
-  String get previousRoute => antRouting.previous;
-
-  /// check if snackbar is open
-  bool get isSnackbarOpen =>
-      SnackbarController.isSnackbarBeingShown; //routing.isSnackbar;
-
-  void closeAllSnackbars() {
-    SnackbarController.cancelAllSnackbars();
+  dynamic get antArguments {
+    print(antRouting.args);
+    return antRouting.args;
   }
 
-  Future<void> closeCurrentSnackbar() async {
-    await SnackbarController.closeCurrentSnackbar();
-  }
+  String get antCurrentRoute => antRouting.current;
 
-  /// check if dialog is open
-  bool? get isDialogOpen => antRouting.isDialog;
+  String get antPreviousRoute => antRouting.previous;
 
-  /// check if bottomsheet is open
-  bool? get isBottomSheetOpen => antRouting.isBottomSheet;
 
-  /// check a raw current route
-  Route<dynamic>? get rawRoute => antRouting.route;
+  bool? get isAntDialogOpen => antRouting.isDialog;
 
-  /// check if popGesture is enable
-  bool get isAntPopGestureEnable => defaultPopGesture;
+  bool? get isAntBottomSheetOpen => antRouting.isBottomSheet;
 
-  /// check if default opaque route is enable
+  Route<dynamic>? get antRawRoute => antRouting.route;
+
+  bool get isAntPopGestureEnable => defaultAntPopGesture;
+
   bool get isAntOpaqueRouteDefault => defaultAntOpaqueRoute;
 
-  /// give access to currentContext
   BuildContext? get antContext => antKey.currentContext;
 
   /// give access to current Overlay Context
   BuildContext? get antOverlayContext {
     BuildContext? overlay;
-    key.currentState?.overlay?.context.visitChildElements((element) {
+    antKey.currentState?.overlay?.context.visitChildElements((element) {
       overlay = element;
     });
     return overlay;
   }
 
-  /// give access to Theme.of(context)
-  AntThemeData get theme {
+  AntThemeData get antTheme {
     var theme = AntThemeData.fallback();
     if (antContext != null) {
-      theme = AntTheme.of(antContext!);
+      theme = AntThemeData.of(antContext!);
     }
     return theme;
   }
 
-  ///The current [WidgetsBinding]
-  WidgetsBinding get antEngine {
-    return WidgetsFlutterBinding.ensureInitialized();
-  }
 
-  /// The window to which this binding is bound.
-  FlutterView get antWindow => View.of(antContext!);
+  GlobalKey<NavigatorState> get antKey => _getxAntController.key;
 
+  Map<dynamic, GlobalKey<NavigatorState>> get antKeys => _getxAntController.keys;
 
-  GlobalKey<NavigatorState> get antKey => _getxController.key;
+  GetAntController get antRootController => _getxAntController;
 
-  Map<dynamic, GlobalKey<NavigatorState>> get antKeys => _getxController.keys;
+  bool get defaultAntPopGesture => _getxAntController.defaultPopGesture;
+  bool get defaultAntOpaqueRoute => _getxAntController.defaultOpaqueRoute;
 
-  GetAntController get antRootController => _getxController;
-
-  bool get defaultAntPopGesture => _getxController.defaultPopGesture;
-  bool get defaultAntOpaqueRoute => _getxController.defaultOpaqueRoute;
-
-  Transition? get defaultAntTransition => _getxController.defaultTransition;
+  Transition? get defaultAntTransition => _getxAntController.defaultTransition;
 
   Duration get defaultAntTransitionDuration {
-    return _getxController.defaultTransitionDuration;
+    return _getxAntController.defaultTransitionDuration;
   }
 
-  Curve get defaultAntTransitionCurve => _getxController.defaultTransitionCurve;
+  Curve get defaultAntTransitionCurve => _getxAntController.defaultTransitionCurve;
 
-  Curve get defaultDialogTransitionCurve {
-    return _getxController.defaultDialogTransitionCurve;
+  Curve get defaultAntDialogTransitionCurve {
+    return _getxAntController.defaultDialogTransitionCurve;
   }
 
-  Duration get defaultDialogTransitionDuration {
-    return _getxController.defaultDialogTransitionDuration;
+  Duration get defaultAntDialogTransitionDuration {
+    return _getxAntController.defaultDialogTransitionDuration;
   }
 
-  Routing get antRouting => _getxController.routing;
 
-  Map<String, String?> get parameters => _getxController.parameters;
+  Routing get antRouting => _getxAntController.routing;
+
+  Map<String, String?> get antParameters => _getxAntController.parameters;
   set parameters(Map<String, String?> newParameters) =>
-      _getxController.parameters = newParameters;
+      _getxAntController.parameters = newParameters;
 
-  CustomTransition? get antCustomTransition => _getxController.customTransition;
+
+  CustomTransition? get antCustomTransition => _getxAntController.customTransition;
   set antCustomTransition(CustomTransition? newTransition) =>
-      _getxController.customTransition = newTransition;
+      _getxAntController.customTransition = newTransition;
 
-  bool get testMode => _getxController.testMode;
-  set testMode(bool isTest) => _getxController.testMode = isTest;
+  bool get antTestMode => _getxAntController.testMode;
+  set antTestMode(bool isTest) => _getxAntController.testMode = isTest;
+
 
   void resetRootNavigator() {
-    _getxController = GetAntController();
+    _getxAntController = GetAntController();
   }
 
-  static GetAntController _getxController = GetAntController();
+  static GetAntController _getxAntController = GetAntController();
 }
