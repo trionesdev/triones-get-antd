@@ -1,4 +1,7 @@
 # Antd Flutter 组件库的 Getx扩展
+
+[![pub package](https://img.shields.io/pub/v/trionesdev_get_antd.svg)](https://pub.dev/packages/trionesdev_get_antd)
+
 > 像使用MaterialApp一样在Getx中使用AntApp
 
 ## 使用方法
