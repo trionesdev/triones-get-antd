@@ -12,8 +12,8 @@ dependencies:
     sdk: flutter
 
   get: ^4.7.2
-  trionesdev_antd_mobile:
-    path: ../triones-antd-mobile-flutter
+  trionesdev_antd_mobile: ^0.0.1
+#    path: ../triones-antd-mobile-flutter
 
 dev_dependencies:
   flutter_test:
