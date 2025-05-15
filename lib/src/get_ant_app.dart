@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:get/route_manager.dart';
-import 'package:trionesdev_antd_mobile/antd.dart';
+import 'package:trionesdev_antd_mobile/trionesdev_antd_mobile.dart';
 
 class GetAntApp extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
