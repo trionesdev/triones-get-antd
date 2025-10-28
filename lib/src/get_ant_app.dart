@@ -127,8 +127,9 @@ class GetAntApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AntThemeData themeData = theme ?? AntThemeData();
     return AntTheme(
-        data: theme ?? AntThemeData(),
+        data: themeData,
         child: GetMaterialApp(
           navigatorKey: navigatorKey,
           scaffoldMessengerKey: scaffoldMessengerKey,
@@ -144,7 +145,7 @@ class GetAntApp extends StatelessWidget {
           title: title,
           onGenerateTitle: onGenerateTitle,
           color: color,
-          theme: theme?.toMaterialThemeData(),
+          theme: themeData.toMaterialThemeData(),
           darkTheme: darkTheme?.toMaterialThemeData(),
           themeMode: toMaterialThemeMode(themeMode),
           locale: locale,
