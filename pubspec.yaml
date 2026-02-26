@@ -11,14 +11,13 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.7.2
-
-publish_to:  https://pub.dev
+  trionesdev_antd_mobile: ^0.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  trionesdev_antd_mobile: ^0.0.1
+
   #    path: ../triones-antd-mobile-flutter
 
 # For information on the generic Dart part of this file, see the
