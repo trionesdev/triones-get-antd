@@ -146,7 +146,7 @@ class GetAntApp extends StatelessWidget {
           onGenerateTitle: onGenerateTitle,
           color: color,
           theme: themeData.toMaterialThemeData(),
-          darkTheme: darkTheme?.toMaterialThemeData(),
+          darkTheme: themeData?.toMaterialThemeData(),
           themeMode: toMaterialThemeMode(themeMode),
           locale: locale,
           fallbackLocale: fallbackLocale,
